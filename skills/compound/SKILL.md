@@ -1,7 +1,7 @@
 ---
 name: compound
 description: Extract learnings from past sessions to improve future Claude interactions
-argument-hint: "[--last <n> | --session <id>]"
+argument-hint: "[--list | --last <n> | --session <id>]"
 user-invocable: true
 disable-model-invocation: true
 allowed-tools: Read, Glob, Grep, Bash, Write, Edit, AskUserQuestion
@@ -15,6 +15,7 @@ Analyze past Claude Code sessions to identify learnings from user corrections an
 
 ```bash
 /compound                    # Analyze current session (default)
+/compound --list             # Browse recent sessions to pick one
 /compound --last 5           # Analyze last 5 sessions
 /compound --session abc123   # Analyze specific session by ID
 ```
@@ -25,12 +26,43 @@ Analyze past Claude Code sessions to identify learnings from user corrections an
 
 Parse the provided arguments:
 - No args → analyze the **current session** (the JSONL file for this conversation)
+- `--list` → show recent sessions and let user pick one to analyze
 - `--last <n>` → analyze last N sessions by modification time
 - `--session <uuid>` → analyze specific session by UUID
 
 **Finding the current session:**
 The current session ID is provided in system context. Look for a path like:
 `~/.claude/projects/<encoded-path>/<session-id>.jsonl`
+
+### Step 1b: Handle --list Mode
+
+If `--list` argument is provided:
+
+1. Get sessions directory: `~/.claude/projects/<encoded-path>/`
+2. List the 20 most recent sessions by modification time
+3. For each session, extract:
+   - Session ID (filename without .jsonl)
+   - Modification date/time
+   - Session title: Look for `"summary"` field in JSONL, or extract from first user message
+   - Message count: Count lines with `"type":"user"` or `"type":"assistant"`
+
+4. Display as a numbered list:
+```
+Recent Sessions (this project):
+
+ 1. [2h ago]  Phase 4: Planning UI chat streaming  (18 msgs)
+    ID: 38c6a217-89e6-41f1-a4b6-3db43978c32a
+
+ 2. [3h ago]  Chat Planning Mode Dashboard Entry  (51 msgs)
+    ID: 9291f759-8ebd-47f3-9cbd-e0920e77a233
+
+ 3. [1d ago]  Streaming Infrastructure Phase  (35 msgs)
+    ID: 4212980e-8a95-4dbb-b534-5e0bab3d7f72
+...
+```
+
+5. Use AskUserQuestion to let user pick which session(s) to analyze
+6. Continue to Step 2 with the selected session(s)
 
 ### Step 2: Locate Session Files
 

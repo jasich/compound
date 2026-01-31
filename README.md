@@ -14,6 +14,7 @@ compound analyzes your session transcripts for corrections, errors, and learning
 
 ```
 /compound              →  Analyze current session
+/compound --list       →  Browse recent sessions to pick one
 /compound --last 5     →  Analyze last 5 sessions
 /compound --session x  →  Analyze specific session
 ```
