@@ -127,28 +127,39 @@ Priority order for where to add the learning:
 
 ### Step 6: Present Learnings for Approval
 
-Use AskUserQuestion to present each learning for approval. Format:
+**IMPORTANT**: Before asking for approval, you MUST display the full learning details to the user as regular text output. The user cannot make an informed decision without seeing the evidence and proposed text.
+
+For each learning, first OUTPUT this information (not in the question, but as text before it):
 
 ```
-## Learning #N: <Title>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## Learning #N: <Descriptive Title>
 
 **Confidence**: High | Medium | Low
 **Category**: <category>
 **Target**: <file path> → "<section name>"
 
+### What Happened
+<Brief description of the context - what was being worked on>
+
 ### Evidence
-> User: "<the correction or feedback>"
+> User: "<the exact correction or feedback from the session>"
+>
+> Context: <what Claude was doing/suggesting that prompted this>
 > (Session: <filename>, <date>)
 
-### Proposed Addition
-<the text to add to the file>
+### Proposed Addition to CLAUDE.md
+<the exact text that would be added to the file>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-Offer options:
+THEN use AskUserQuestion with options:
 - **Approve** - Write this learning to the target file
 - **Reject** - Skip this learning
-- **Edit** - Let user modify the proposed text
+- **Edit** - Let user modify the proposed text (ask them for the modified text)
 - **Skip All** - Stop processing remaining learnings
+
+The question text should be brief since all details are already displayed above it.
 
 ### Step 7: Write Approved Changes
 
