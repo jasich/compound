@@ -51,6 +51,8 @@ compound scans session JSONL files for:
 
 ### 3. Proposes documentation
 
+Shows full context before asking for approval:
+
 ```
 ## Learning #1: Avoid rescue blocks
 
@@ -58,15 +60,19 @@ compound scans session JSONL files for:
 **Category**: anti-pattern
 **Target**: ./CLAUDE.md → "Things NOT to do"
 
+### What Happened
+Claude added a rescue block to handle potential errors in a service object.
+
 ### Evidence
 > User: "no, don't use rescue here"
+> Context: Claude had wrapped an API call in begin/rescue
 > (Session: abc123, 2025-01-30)
 
 ### Proposed Addition
 - Avoid using `rescue` unless for known, specific error cases
-
-[Approve] [Reject] [Edit] [Skip All]
 ```
+
+Then asks: Approve / Reject / Edit / Skip All
 
 ### 4. Writes approved learnings
 
