@@ -1,4 +1,6 @@
-# compound
+<p align="center">
+  <img src="logo.jpeg" alt="compound" width="500">
+</p>
 
 **Your past sessions are goldmines. Mine them.**
 
